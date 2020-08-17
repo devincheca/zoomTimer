@@ -12,18 +12,53 @@
   </head>
   <body>
     <div id="selection">
-      <div class="field">
-        <div class="control">
-          <input class="input is-primary" type="text" placeholder="Qualifying Time">
+      <section class="hero">
+        <div class="hero-body">
+          <div class="container centerText">
+            <h1 class="title">
+              Input Timing Parameters Below in Minutes
+            </h1>
+            <h2 class="subtitle">
+              \/
+            </h2>
+          </div>
+        </div>
+      </section>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <div class="control">
+              <input class="input is-primary" type="number" placeholder="Qualifying Time" id="qualify">
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <div class="control">
+              <input class="input is-danger" type="number" placeholder="Time Limit" id="limit">
+            </div>
+          </div>
         </div>
       </div>
-      <div class="field">
-        <div class="control">
-          <input class="input is-danger" type="text" placeholder="Danger input">
+      <div class="columns">
+        <div class="column">
+          <div class="buttons flexCenter">
+            <button class="button is-primary" onclick="startTimer()">Start</button>
+          </div>
         </div>
       </div>
     </div>
-    <div id="whiteCard">
+    <div id="whiteCard" style="display: none;">
+      <section class="hero">
+        <div class="hero-body">
+          <div class="container centerText">
+            <h1 class="title">
+              Your current time:
+            </h1>
+            <h2 class="subtitle" id="currentTime"></h2>
+          </div>
+        </div>
+      </section>
     </div>
     <div id="greenCard">
       <img src="assets/green.jpg">
