@@ -20,7 +20,12 @@ function startTimer() {
   function updateOnScreenTimer() {
     const newTime = calcTime();
     if (newTime.minutes === parseInt(qualifyMinutes)) { showGreenCard(); }
-    if (newTime.minutes === parseInt(warningMinutes)) { showYellowCard(); }
+    if (newTime.minutes === parseInt(warningMinutes)) {
+      if (newTime.seconds < 30 && parseInt(qualifyMinutes) === parseInt(warningMinutes)) {
+        showGreenCard();
+      }
+      else { showYellowCard(); }
+    }
     if (newTime.minutes === parseInt(limitMinutes)) { showRedCard(); }
     getElement('currentTime').innerHTML = newTime.timeString;
     totalSeconds = totalSeconds + 1;
@@ -29,6 +34,7 @@ function startTimer() {
   function calcTime() {
     return {
       minutes: getMinutes(),
+      seconds: getSeconds(),
       timeString: format(getMinutes()) + ':' + format(getSeconds())
     };
     function getSeconds() { return totalSeconds % 60; }
