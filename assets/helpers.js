@@ -1,33 +1,57 @@
 window.onload = () => {
   return;
 };
-class runningTimer {
-  constructor() {
-    this.startTime = new Date();
-  }
-  getTime() {
-    return new Date();
-  }
-}
 function startTimer() {
   const qualifyMinutes = getElement('qualify');
+  const warningMinutes = getElement('warn');
   const limitMinutes = getElement('limit');
   if (!qualifyMinutes) { alert('Input qualifing time'); return; }
+  if (!warningMinutes) { alert('Input yellow card time'); return; }
   if (!limitMinutes) { alert('Input time limit'); return; }
-  const timer = new runningTimer();
+  if (qualifyMinutes > warningMinutes || qualifyMinutes > limitMinutes) {
+    alert('Qualifing time cannot exceed yellow card time');
+    return;
+  }
+  if (warningMinutes > limitMinutes) {
+    alert('Warning time cannot exceed time limit');
+    return;
+  }
+  const startTime = new Date();
   getElement('whiteCard').style.display = 'block';
   getElement('selection').style.display = 'none';
-  console.log('start');
   updateOnScreenTimer();
+  function showGreenCard() {
+    Array.from(getElement('greenCard').children)
+    .map((img) => { img.style.display = 'block'; });
+  }
+  function showYellowCard() {
+    Array.from(getElement('yellowCard').children)
+    .map((img) => { img.style.display = 'block'; });
+    Array.from(getElement('greenCard').children)
+    .map((img) => { img.style.display = 'none'; });
+  }
+  function showRedCard() {
+    Array.from(getElement('redCard').children)
+    .map((img) => { img.style.display = 'block'; });
+    Array.from(getElement('yellowCard').children)
+    .map((img) => { img.style.display = 'none'; });
+  }
   function updateOnScreenTimer() {
     getElement('currentTime').innerHTML = calcTime();
-    console.log('test');
     setTimeout(updateOnScreenTimer, 1000);
   }
   function calcTime() {
-    return getSeconds();
+    return format(getMinutes()) + ':' + format(getSeconds());
     function getSeconds() {
-      return (new Date().getSeconds() - test.getSeconds() + 60) % 60;
+      return (new Date().getSeconds() + (60 - startTime.getSeconds())) % 60
+    }
+    function getMinutes() {
+      return new Date().getHours() !== startTime.getHours()
+        ? (new Date().getMinutes() - startTime.getMinutes()) + (60 - start.getMinutes())
+        : new Date().getMinutes() - startTime.getMinutes();
+    }
+    function format(time) {
+      return time.toString().length === 1 ? '0' + time : time;
     }
   }
 }
