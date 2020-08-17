@@ -1,10 +1,7 @@
-window.onload = () => {
-  return;
-};
 function startTimer() {
-  const qualifyMinutes = getElement('qualify');
-  const warningMinutes = getElement('warn');
-  const limitMinutes = getElement('limit');
+  const qualifyMinutes = getElement('qualify').value;
+  const warningMinutes = getElement('warn').value;
+  const limitMinutes = getElement('limit').value;
   if (!qualifyMinutes) { alert('Input qualifing time'); return; }
   if (!warningMinutes) { alert('Input yellow card time'); return; }
   if (!limitMinutes) { alert('Input time limit'); return; }
@@ -16,45 +13,43 @@ function startTimer() {
     alert('Warning time cannot exceed time limit');
     return;
   }
-  const startTime = new Date();
-  getElement('whiteCard').style.display = 'block';
+  let totalSeconds = 0;
+  getElement('whiteCard').style.display = 'flex';
   getElement('selection').style.display = 'none';
   updateOnScreenTimer();
-  function showGreenCard() {
-    Array.from(getElement('greenCard').children)
-    .map((img) => { img.style.display = 'block'; });
-  }
-  function showYellowCard() {
-    Array.from(getElement('yellowCard').children)
-    .map((img) => { img.style.display = 'block'; });
-    Array.from(getElement('greenCard').children)
-    .map((img) => { img.style.display = 'none'; });
-  }
-  function showRedCard() {
-    Array.from(getElement('redCard').children)
-    .map((img) => { img.style.display = 'block'; });
-    Array.from(getElement('yellowCard').children)
-    .map((img) => { img.style.display = 'none'; });
-  }
   function updateOnScreenTimer() {
-    getElement('currentTime').innerHTML = calcTime();
+    const newTime = calcTime();
+    if (newTime.minutes === parseInt(qualifyMinutes)) { showGreenCard(); }
+    if (newTime.minutes === parseInt(warningMinutes)) { showYellowCard(); }
+    if (newTime.minutes === parseInt(limitMinutes)) { showRedCard(); }
+    getElement('currentTime').innerHTML = newTime.timeString;
+    totalSeconds = totalSeconds + 1;
     setTimeout(updateOnScreenTimer, 1000);
   }
   function calcTime() {
-    return format(getMinutes()) + ':' + format(getSeconds());
-    function getSeconds() {
-      return (new Date().getSeconds() + (60 - startTime.getSeconds())) % 60
-    }
-    function getMinutes() {
-      return new Date().getHours() !== startTime.getHours()
-        ? (new Date().getMinutes() - startTime.getMinutes()) + (60 - start.getMinutes())
-        : new Date().getMinutes() - startTime.getMinutes();
-    }
-    function format(time) {
-      return time.toString().length === 1 ? '0' + time : time;
-    }
+    return {
+      minutes: getMinutes(),
+      timeString: format(getMinutes()) + ':' + format(getSeconds())
+    };
+    function getSeconds() { return totalSeconds % 60; }
+    function getMinutes() { return Math.floor(totalSeconds / 60); }
+    function format(time) { return time.toString().length === 1 ? '0' + time : time; }
   }
 }
-function getElement(id) {
-  return document.getElementById(id);
+function getElement(id) { return document.getElementById(id); }
+function showGreenCard() {
+  Array.from(getElement('greenCard').children)
+  .map((img) => { img.style.display = 'block'; });
+}
+function showYellowCard() {
+  Array.from(getElement('yellowCard').children)
+  .map((img) => { img.style.display = 'block'; });
+  Array.from(getElement('greenCard').children)
+  .map((img) => { img.style.display = 'none'; });
+}
+function showRedCard() {
+  Array.from(getElement('redCard').children)
+  .map((img) => { img.style.display = 'block'; });
+  Array.from(getElement('yellowCard').children)
+  .map((img) => { img.style.display = 'none'; });
 }

@@ -9,3 +9,16 @@ img {
 .flexCenter {
   justify-content: center !important;
 }
+#whiteCard {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  padding: 5em;
+}
+#currentTime {
+  font-size: 15em;
+  font-weight: bold;
+}
